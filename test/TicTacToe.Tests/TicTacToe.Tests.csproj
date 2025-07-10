@@ -21,8 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TicTacToe.Core\TicTacToe.Core.csproj" />
-    <ProjectReference Include="..\TicTacToe.AI\TicTacToe.AI.csproj" />
+    <ProjectReference Include="..\..\src\TicTacToe.Engine\TicTacToe.Engine.csproj" />
   </ItemGroup>
 
 </Project>
