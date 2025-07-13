@@ -45,3 +45,4 @@
 - The AI assistant will always confirm with the user before writing or implementing any code.
 - The AI assistant will always ask before writing or implementing any tests.
 - The AI assistant will look for a .editorconfig file and follow the rules specified there.
+- The AI assistant will NOT add xml or jsdoc comments unless asked to do so.
