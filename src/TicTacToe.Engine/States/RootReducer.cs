@@ -5,6 +5,12 @@ public static class RootReducer
     public static RootState Reduce(RootState state, GameAction action)
     {
         var newGameState = GameReducer.Reduce(state.Game, action);
-        return state with { Game = newGameState };
+        var newHistoryState = HistoryReducer.Reduce(state.History, action);
+        
+        return state with 
+        { 
+            Game = newGameState,
+            History = newHistoryState
+        };
     }
 }

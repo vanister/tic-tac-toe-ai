@@ -11,13 +11,13 @@ public class GameEngine
         _store = new GameStore();
     }
 
-    public GameState GetState() => _store.CurrentState;
+    public GameState GetState() => _store.State.Game;
 
-    public bool IsGameFinished() => _store.CurrentState.IsFinished;
+    public bool IsGameFinished() => _store.State.Game.IsFinished;
 
-    public Player GetCurrentPlayer() => _store.CurrentState.CurrentPlayer;
+    public Player GetCurrentPlayer() => _store.State.Game.CurrentPlayer;
 
-    public Player? GetWinner() => _store.CurrentState.Winner;
+    public Player? GetWinner() => _store.State.Game.Winner;
 
     public void StartGame(Player startingPlayer, string? gameId = null)
     {
@@ -52,7 +52,7 @@ public class GameEngine
 
     private string? ValidateMove(Player player, int position)
     {
-        var state = _store.CurrentState;
+        var state = _store.State.Game;
 
         if (state.Status != GameStatus.Playing)
         {

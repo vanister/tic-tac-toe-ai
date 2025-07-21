@@ -4,7 +4,7 @@ public class GameStore(RootState? initialState = null)
 {
     private RootState _currentState = initialState ?? RootState.CreateNew(Player.X);
 
-    public GameState CurrentState => _currentState.Game;
+    public RootState State => _currentState;
 
     public void Dispatch(GameAction action)
     {
