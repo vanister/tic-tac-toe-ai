@@ -29,7 +29,9 @@ public class GameEngine
         error = ValidateMove(player, position);
         
         if (error != null)
+        {
             return false;
+        }
 
         _store.Dispatch(new MakeMoveAction(player, position));
         return true;
@@ -38,7 +40,9 @@ public class GameEngine
     public void MakeMove(Player player, int position)
     {
         if (!TryMakeMove(player, position, out var error))
+        {
             throw new InvalidOperationException(error);
+        }
     }
 
     public void ResetGame()
@@ -51,16 +55,24 @@ public class GameEngine
         var state = _store.CurrentState;
 
         if (state.Status != GameStatus.Playing)
+        {
             return "Game is not in progress";
+        }
 
         if (player != state.CurrentPlayer)
+        {
             return $"It's not {player}'s turn";
+        }
 
         if (position < 0 || position >= 9)
+        {
             return "Position must be between 0 and 8";
+        }
 
         if (state.Board[position] != 0)
+        {
             return "Position is already occupied";
+        }
 
         return null;
     }
