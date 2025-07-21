@@ -1,18 +1,16 @@
 namespace TicTacToe.Engine.States;
 
-public class GameStore(GameState? initialState = null)
+public class GameStore(RootState? initialState = null)
 {
-    private GameState _currentState = initialState ?? GameState.CreateNew(Player.X);
+    private RootState _currentState = initialState ?? RootState.CreateNew(Player.X);
 
-    public GameState CurrentState => _currentState;
+    public GameState CurrentState => _currentState.Game;
 
     public void Dispatch(GameAction action)
     {
-        var newState = GameReducer.Reduce(_currentState, action);
-        
-        if (!ReferenceEquals(newState, _currentState))
-        {
-            _currentState = newState;
-        }
+        var newState = RootReducer.Reduce(_currentState, action);
+
+        _currentState = newState;
+
     }
 }
