@@ -1,4 +1,7 @@
-namespace TicTacToe.Engine.States;
+using TicTacToe.Engine.Actions;
+using TicTacToe.Engine.States;
+
+namespace TicTacToe.Engine.Updaters;
 
 public static class GameUpdater
 {
@@ -9,12 +12,12 @@ public static class GameUpdater
         [0, 4, 8], [2, 4, 6]             // diagonals
     ];
 
-    public static GameState StartGame(StartGameAction action)
+    public static GameState StartGame(Actions.StartGameAction action)
     {
         return GameState.CreateNew(action.StartingPlayer, action.GameId);
     }
 
-    public static GameState MakeMove(GameState state, MakeMoveAction action)
+    public static GameState MakeMove(GameState state, Actions.MakeMoveAction action)
     {
         var newBoard = (int[])state.Board.Clone();
         newBoard[action.Position] = (int)action.Player;

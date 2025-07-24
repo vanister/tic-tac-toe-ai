@@ -1,4 +1,6 @@
-namespace TicTacToe.Engine.States;
+using TicTacToe.Engine.States;
+
+namespace TicTacToe.Engine.Selectors;
 
 public static class GameSelectors
 {

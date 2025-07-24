@@ -1,7 +1,9 @@
+using TicTacToe.Engine.Actions;
+
 namespace TicTacToe.Engine.States;
 
 public record HistoryState(
-    IReadOnlyList<GameAction> Actions)
+    IReadOnlyList<Actions.GameAction> Actions)
 {
     public static HistoryState CreateNew()
     {

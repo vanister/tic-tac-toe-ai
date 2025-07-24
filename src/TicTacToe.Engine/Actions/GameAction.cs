@@ -1,4 +1,4 @@
-namespace TicTacToe.Engine.States;
+namespace TicTacToe.Engine.Actions;
 
 public abstract record GameAction;
 

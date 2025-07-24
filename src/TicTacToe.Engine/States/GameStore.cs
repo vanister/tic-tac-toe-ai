@@ -1,3 +1,6 @@
+using TicTacToe.Engine.Actions;
+using TicTacToe.Engine.Reducers;
+
 namespace TicTacToe.Engine.States;
 
 public class GameStore(RootState? initialState = null)
@@ -6,7 +9,7 @@ public class GameStore(RootState? initialState = null)
 
     public RootState State => _currentState;
 
-    public void Dispatch(GameAction action)
+    public void Dispatch(Actions.GameAction action)
     {
         var newState = RootReducer.Reduce(_currentState, action);
 
