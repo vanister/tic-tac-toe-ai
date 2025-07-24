@@ -4,7 +4,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Engine", "src/TicTacToe.Engine/TicTacToe.Engine.csproj", "{38C1A441-4043-4240-B85A-5EB9181953F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Tests", "test/TicTacToe.Tests/TicTacToe.Tests.csproj", "{D31AB487-EA8D-4F15-9502-5B05DA82A047}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Integrations", "test/TicTacToe.Integrations/TicTacToe.Integrations.csproj", "{D31AB487-EA8D-4F15-9502-5B05DA82A047}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

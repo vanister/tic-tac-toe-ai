@@ -1,7 +1,7 @@
 using TicTacToe.Engine;
 using TicTacToe.Engine.Selectors;
 
-namespace TicTacToe.Tests;
+namespace TicTacToe.Integrations;
 
 public class GameEngineIntegrationTests
 {
