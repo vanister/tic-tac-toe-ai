@@ -9,13 +9,4 @@ public record HistoryState(
             Actions: []
         );
     }
-    
-    public HistoryState AddAction(GameAction action)
-    {
-        var newActions = Actions.ToList();
-        newActions.Add(action);
-        return this with { Actions = newActions };
-    }
-    
-    public int ActionCount => Actions.Count;
 }

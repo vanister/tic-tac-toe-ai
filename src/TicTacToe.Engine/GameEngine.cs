@@ -13,11 +13,11 @@ public class GameEngine
 
     public GameState GetState() => _store.State.Game;
 
-    public bool IsGameFinished() => _store.State.Game.IsFinished;
+    public bool IsGameFinished() => GameSelectors.IsFinished(_store.State.Game);
 
     public Player GetCurrentPlayer() => _store.State.Game.CurrentPlayer;
 
-    public Player? GetWinner() => _store.State.Game.Winner;
+    public Player? GetWinner() => GameSelectors.GetWinner(_store.State.Game);
 
     public void StartGame(Player startingPlayer, string? gameId = null)
     {
@@ -69,7 +69,7 @@ public class GameEngine
             return "Position must be between 0 and 8";
         }
 
-        if (state.Board[position] != 0)
+        if (!GameSelectors.IsPositionEmpty(state, position))
         {
             return "Position is already occupied";
         }
