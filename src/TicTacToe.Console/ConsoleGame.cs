@@ -66,8 +66,10 @@ public class ConsoleGame
 
             if (!_engine.TryMakeMove(currentPlayer, position.Value, out var error))
             {
+                // Show error after clearing screen and redisplaying game state
+                _renderer.DisplayGameState(_engine.GetState());
                 ConsoleGameRenderer.ShowError(error!);
-                ConsoleGameRenderer.WaitForKeyPress();
+                System.Console.WriteLine(); // Add some spacing after error
             }
         }
 

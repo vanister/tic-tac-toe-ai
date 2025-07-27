@@ -57,7 +57,9 @@ public class ConsoleGameRenderer
         
         if (state.Status == GameStatus.Playing)
         {
-            System.Console.WriteLine($"Current Player: {state.CurrentPlayer.ToChar()}");
+            System.Console.Write("Current Player: ");
+            DisplayColoredPlayerChar(state.CurrentPlayer);
+            System.Console.WriteLine();
         }
 
         DisplayGameInfo(state);
@@ -70,14 +72,19 @@ public class ConsoleGameRenderer
         
         // Show position numbers
         System.Console.WriteLine("Positions:     Current:");
-        System.Console.WriteLine("0 | 1 | 2      {0} | {1} | {2}",
-            GetDisplayChar(board[0], 0), GetDisplayChar(board[1], 1), GetDisplayChar(board[2], 2));
+        System.Console.Write("0 | 1 | 2      ");
+        DisplayColoredBoardRow(board, 0, 1, 2);
+        System.Console.WriteLine();
+        
         System.Console.WriteLine("----------     ----------");
-        System.Console.WriteLine("3 | 4 | 5      {0} | {1} | {2}",
-            GetDisplayChar(board[3], 3), GetDisplayChar(board[4], 4), GetDisplayChar(board[5], 5));
+        System.Console.Write("3 | 4 | 5      ");
+        DisplayColoredBoardRow(board, 3, 4, 5);
+        System.Console.WriteLine();
+        
         System.Console.WriteLine("----------     ----------");
-        System.Console.WriteLine("6 | 7 | 8      {0} | {1} | {2}",
-            GetDisplayChar(board[6], 6), GetDisplayChar(board[7], 7), GetDisplayChar(board[8], 8));
+        System.Console.Write("6 | 7 | 8      ");
+        DisplayColoredBoardRow(board, 6, 7, 8);
+        System.Console.WriteLine();
     }
 
     private static char GetDisplayChar(int boardValue, int position)
@@ -88,6 +95,54 @@ public class ConsoleGameRenderer
         }
         
         return boardValue == 1 ? 'X' : 'O';
+    }
+
+    private static void DisplayColoredBoardRow(int[] board, int pos1, int pos2, int pos3)
+    {
+        DisplayColoredChar(board[pos1], pos1);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[pos2], pos2);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[pos3], pos3);
+    }
+
+    private static void DisplayColoredChar(int boardValue, int position)
+    {
+        if (boardValue == 0)
+        {
+            // Empty position - show position number in default color
+            System.Console.Write(position.ToString()[0]);
+        }
+        else if (boardValue == 1)
+        {
+            // X player - blue color
+            System.Console.ForegroundColor = ConsoleColor.Blue;
+            System.Console.Write('X');
+            System.Console.ResetColor();
+        }
+        else
+        {
+            // O player - red color
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.Write('O');
+            System.Console.ResetColor();
+        }
+    }
+
+    private static void DisplayColoredPlayerChar(Player player)
+    {
+        if (player == Player.X)
+        {
+            System.Console.ForegroundColor = ConsoleColor.Blue;
+            System.Console.Write('X');
+            System.Console.ResetColor();
+        }
+        else
+        {
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.Write('O');
+            System.Console.ResetColor();
+        }
     }
 
     private static void DisplayGameInfo(GameState state)
@@ -103,7 +158,9 @@ public class ConsoleGameRenderer
             for (int i = 0; i < state.MoveHistory.Count; i++)
             {
                 var move = state.MoveHistory[i];
-                System.Console.WriteLine($"  {i + 1}. {move.Player.ToChar()} → Position {move.Position}");
+                System.Console.Write($"  {i + 1}. ");
+                DisplayColoredPlayerChar(move.Player);
+                System.Console.WriteLine($" → Position {move.Position}");
             }
         }
     }
@@ -111,28 +168,31 @@ public class ConsoleGameRenderer
     public int? GetPlayerMove(Player player)
     {
         System.Console.WriteLine();
-        System.Console.WriteLine($"Player {player.ToChar()}'s turn");
-        System.Console.Write("Enter position (0-8) or 'q' to quit: ");
-        
-        var input = System.Console.ReadLine()?.Trim().ToLower();
-        
-        if (input == "q" || input == "quit")
-        {
-            return null;
-        }
-        
-        if (int.TryParse(input, out var position) && position >= 0 && position <= 8)
-        {
-            return position;
-        }
+        System.Console.Write("Player ");
+        DisplayColoredPlayerChar(player);
+        System.Console.WriteLine("'s turn");
 
-        ShowError("Invalid input. Please enter a number between 0 and 8.");
-        return GetPlayerMove(player); // Recursive retry
+        while (true)
+        {
+            System.Console.Write("Enter position (0-8) or 'q' to quit: ");
+            var input = System.Console.ReadLine()?.Trim().ToLower();
+            
+            if (input == "q" || input == "quit")
+            {
+                return null;
+            }
+            
+            if (int.TryParse(input, out var position) && position >= 0 && position <= 8)
+            {
+                return position;
+            }
+
+            ShowError("Invalid input. Please enter a number between 0 and 8.");
+        }
     }
 
     public static void ShowError(string message)
     {
-        System.Console.WriteLine();
         System.Console.ForegroundColor = ConsoleColor.Red;
         System.Console.WriteLine($"Error: {message}");
         System.Console.ResetColor();
@@ -146,15 +206,20 @@ public class ConsoleGameRenderer
         if (winner.HasValue)
         {
             System.Console.ForegroundColor = ConsoleColor.Green;
-            System.Console.WriteLine($"🎉 GAME OVER - Player {winner.Value.ToChar()} WINS! 🎉");
+            System.Console.Write("🎉 GAME OVER - Player ");
+            System.Console.ResetColor();
+            DisplayColoredPlayerChar(winner.Value);
+            System.Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine(" WINS! 🎉");
+            System.Console.ResetColor();
         }
         else
         {
             System.Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.WriteLine("🤝 GAME OVER - IT'S A TIE! 🤝");
+            System.Console.ResetColor();
         }
         
-        System.Console.ResetColor();
         System.Console.WriteLine("═══════════════════════════════════════");
     }
 
