@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Console Game",
+			"type": "shell",
+			"command": "dotnet run --project src/TicTacToe.Console",
+			"group": "build",
+			"isBackground": false
+		}
+	]
+}
