@@ -86,4 +86,9 @@ public class TestRenderer : IGameRenderer
     {
         _outputs.Add("RETURN_TO_MENU");
     }
+
+    public void WaitForKeyPress(string? message = null)
+    {
+        _outputs.Add($"WAIT_FOR_KEY: {message ?? "Press any key to continue..."}");
+    }
 }

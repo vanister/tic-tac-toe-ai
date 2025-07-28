@@ -176,6 +176,15 @@ public class ConsoleGameRenderer : IGameRenderer
         System.Console.ResetColor();
     }
 
+    public void WaitForKeyPress(string? message = null)
+    {
+        System.Console.WriteLine();
+        System.Console.ForegroundColor = ConsoleColor.Cyan;
+        System.Console.WriteLine(message ?? "Press any key to continue...");
+        System.Console.ResetColor();
+        System.Console.ReadKey(true);
+    }
+
     public void ShowGameResult(Player? winner)
     {
         System.Console.WriteLine();
@@ -247,15 +256,12 @@ public class ConsoleGameRenderer : IGameRenderer
     public void ShowInvalidChoice()
     {
         ShowError("Invalid choice. Please select 1, 2, or q.");
+        WaitForKeyPress();
     }
 
     public void ShowReturnToMenu()
     {
-        System.Console.WriteLine();
-        System.Console.ForegroundColor = ConsoleColor.Cyan;
-        System.Console.WriteLine("Returning to main menu...");
-        System.Console.ResetColor();
-        System.Threading.Thread.Sleep(1500); // Brief pause to let players see the result
+        WaitForKeyPress("Press any key to return to main menu...");
     }
 
     public static void ShowHeader()

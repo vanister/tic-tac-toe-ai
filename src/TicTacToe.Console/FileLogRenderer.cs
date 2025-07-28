@@ -83,6 +83,12 @@ public class FileLogRenderer : IGameRenderer
         _innerRenderer.ShowReturnToMenu();
     }
 
+    public void WaitForKeyPress(string? message = null)
+    {
+        Log($"INPUT: Waiting for key press - {message ?? "Press any key to continue..."}");
+        _innerRenderer.WaitForKeyPress(message);
+    }
+
     private void Log(string message)
     {
         var logEntry = $"[{DateTime.Now:HH:mm:ss.fff}] {message}{Environment.NewLine}";

@@ -14,4 +14,5 @@ public interface IGameRenderer
     void ShowGameRules();
     void ShowInvalidChoice();
     void ShowReturnToMenu();
+    void WaitForKeyPress(string? message = null);
 }

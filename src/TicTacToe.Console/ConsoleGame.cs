@@ -2,19 +2,13 @@ using TicTacToe.Engine;
 
 namespace TicTacToe.Console;
 
-public class ConsoleGame
+public class ConsoleGame(IGameRenderer renderer)
 {
-    private readonly GameEngine _engine;
-    private readonly IGameRenderer _renderer;
+    private readonly GameEngine _engine = new GameEngine();
+    private readonly IGameRenderer _renderer = renderer;
 
     public ConsoleGame() : this(new ConsoleGameRenderer())
     {
-    }
-
-    public ConsoleGame(IGameRenderer renderer)
-    {
-        _engine = new GameEngine();
-        _renderer = renderer;
     }
 
     public void Run()
@@ -81,7 +75,7 @@ public class ConsoleGame
                 {
                     // Invalid move - show error and get input again
                     _renderer.ShowError(error!);
-                    Thread.Sleep(1500); // Brief pause to show error
+                    _renderer.WaitForKeyPress();
                 }
             }
         }
