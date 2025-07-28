@@ -8,9 +8,10 @@ This is a C#/.NET project building an AI training system for Tic Tac Toe with pr
 The core follows a Redux pattern with strict separation of concerns:
 - **`GameEngine`** - Public API layer with validation (in root of Engine project)
 - **`States/GameStore`** - Manages current state and dispatches actions
-- **`States/GameReducer`** - Routes actions to appropriate updaters (pure routing only)
-- **`States/GameUpdater`** - Contains all state transformation logic
-- **`States/GameAction`** - Action definitions (`StartGameAction`, `MakeMoveAction`, `ResetGameAction`)
+- **`Reducers/*`** - Routes actions to appropriate updaters (pure routing only)
+- **`Updaters/*`** - Contains all state transformation logic
+- **`Selectors/*`** - Pure functions to derive state information (e.g., current player, board status)
+- **`Actions/*`** - Action definitions (`StartGameAction`, `MakeMoveAction`, `ResetGameAction`)
 
 ### Key State Model
 - **Board**: `int[]` of 9 elements (1=X, -1=O, 0=empty) representing positions 0-8

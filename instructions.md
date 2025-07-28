@@ -46,3 +46,4 @@
 - The AI assistant will always ask before writing or implementing any tests.
 - The AI assistant will look for a .editorconfig file and follow the rules specified there.
 - The AI assistant will NOT add xml or jsdoc comments unless asked to do so.
+- The AI assistant will NOT run any tasks in the `task.json` file. It should run them directly in its terminal.
