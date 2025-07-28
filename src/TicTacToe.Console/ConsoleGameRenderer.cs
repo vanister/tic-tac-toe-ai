@@ -2,9 +2,9 @@ using TicTacToe.Engine;
 
 namespace TicTacToe.Console;
 
-public class ConsoleGameRenderer
+public class ConsoleGameRenderer : IGameRenderer
 {
-    public static void ShowWelcome()
+    public void ShowWelcome()
     {
         ShowHeader();
         System.Console.WriteLine("║      Manual Play & Debug Mode       ║");
@@ -12,7 +12,7 @@ public class ConsoleGameRenderer
         System.Console.WriteLine();
     }
 
-    public static string ShowMainMenu()
+    public string ShowMainMenu()
     {
         System.Console.Clear();
         ShowHeader();
@@ -26,7 +26,7 @@ public class ConsoleGameRenderer
         return System.Console.ReadLine() ?? "";
     }
 
-    public static Player? GetStartingPlayer()
+    public Player? GetStartingPlayer()
     {
         System.Console.Clear();
         ShowHeader();
@@ -62,25 +62,6 @@ public class ConsoleGameRenderer
             DisplayColoredPlayerChar(state.CurrentPlayer);
             System.Console.WriteLine();
         }
-    }
-
-    private static char GetDisplayChar(int boardValue, int position)
-    {
-        if (boardValue == 0)
-        {
-            return position.ToString()[0];
-        }
-        
-        return boardValue == 1 ? 'X' : 'O';
-    }
-
-    private static void DisplayColoredBoardRow(int[] board, int pos1, int pos2, int pos3)
-    {
-        DisplayColoredChar(board[pos1], pos1);
-        System.Console.Write(" | ");
-        DisplayColoredChar(board[pos2], pos2);
-        System.Console.Write(" | ");
-        DisplayColoredChar(board[pos3], pos3);
     }
 
     private static void DisplayColoredChar(int boardValue, int position)
@@ -188,14 +169,14 @@ public class ConsoleGameRenderer
         }
     }
 
-    public static void ShowError(string message)
+    public void ShowError(string message)
     {
         System.Console.ForegroundColor = ConsoleColor.Red;
         System.Console.WriteLine($"Error: {message}");
         System.Console.ResetColor();
     }
 
-    public static void ShowGameResult(Player? winner)
+    public void ShowGameResult(Player? winner)
     {
         System.Console.WriteLine();
         System.Console.WriteLine("═══════════════════════════════════════");
@@ -220,7 +201,7 @@ public class ConsoleGameRenderer
         System.Console.WriteLine("═══════════════════════════════════════");
     }
 
-    public static void ShowGameRules()
+    public void ShowGameRules()
     {
         System.Console.Clear();
         ShowHeader();
@@ -268,14 +249,7 @@ public class ConsoleGameRenderer
         ShowError("Invalid choice. Please select 1, 2, or q.");
     }
 
-    public static void WaitForKeyPress()
-    {
-        System.Console.WriteLine();
-        System.Console.WriteLine("Press any key to continue...");
-        System.Console.ReadKey(true);
-    }
-
-    public static void ShowReturnToMenu()
+    public void ShowReturnToMenu()
     {
         System.Console.WriteLine();
         System.Console.ForegroundColor = ConsoleColor.Cyan;

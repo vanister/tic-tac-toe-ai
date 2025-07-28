@@ -5,21 +5,25 @@ namespace TicTacToe.Console;
 public class ConsoleGame
 {
     private readonly GameEngine _engine;
-    private readonly ConsoleGameRenderer _renderer;
+    private readonly IGameRenderer _renderer;
 
-    public ConsoleGame()
+    public ConsoleGame() : this(new ConsoleGameRenderer())
+    {
+    }
+
+    public ConsoleGame(IGameRenderer renderer)
     {
         _engine = new GameEngine();
-        _renderer = new ConsoleGameRenderer();
+        _renderer = renderer;
     }
 
     public void Run()
     {
-        ConsoleGameRenderer.ShowWelcome();
+        _renderer.ShowWelcome();
 
         while (true)
         {
-            var choice = ConsoleGameRenderer.ShowMainMenu();
+            var choice = _renderer.ShowMainMenu();
             
             switch (choice.ToLower())
             {
@@ -40,7 +44,7 @@ public class ConsoleGame
 
     private void PlayGame()
     {
-        var startingPlayer = ConsoleGameRenderer.GetStartingPlayer();
+        var startingPlayer = _renderer.GetStartingPlayer();
         if (startingPlayer == null)
         {
             return; // User cancelled
@@ -76,7 +80,7 @@ public class ConsoleGame
                 else
                 {
                     // Invalid move - show error and get input again
-                    ConsoleGameRenderer.ShowError(error!);
+                    _renderer.ShowError(error!);
                     Thread.Sleep(1500); // Brief pause to show error
                 }
             }
@@ -85,13 +89,13 @@ public class ConsoleGame
         if (_engine.IsGameFinished())
         {
             _renderer.DisplayGameState(_engine.GetState());
-            ConsoleGameRenderer.ShowGameResult(_engine.GetWinner());
-            ConsoleGameRenderer.ShowReturnToMenu();
+            _renderer.ShowGameResult(_engine.GetWinner());
+            _renderer.ShowReturnToMenu();
         }
     }
 
     private void ShowGameRules()
     {
-        ConsoleGameRenderer.ShowGameRules();
+        _renderer.ShowGameRules();
     }
 }
