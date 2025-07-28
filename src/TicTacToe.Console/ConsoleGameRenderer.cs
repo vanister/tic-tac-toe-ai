@@ -20,9 +20,9 @@ public class ConsoleGameRenderer
         System.Console.WriteLine("Main Menu:");
         System.Console.WriteLine("1. Play Game");
         System.Console.WriteLine("2. Show Rules");
-        System.Console.WriteLine("3. Exit");
+        System.Console.WriteLine("q. Exit");
         System.Console.WriteLine();
-        System.Console.Write("Choose an option (1-3): ");
+        System.Console.Write("Choose an option (1, 2, or q): ");
         return System.Console.ReadLine() ?? "";
     }
 
@@ -34,11 +34,11 @@ public class ConsoleGameRenderer
         System.Console.WriteLine("Who goes first?");
         System.Console.WriteLine("1. X (crosses)");
         System.Console.WriteLine("2. O (noughts)");
-        System.Console.WriteLine("3. Back to main menu");
+        System.Console.WriteLine("q. Back to main menu");
         System.Console.WriteLine();
-        System.Console.Write("Choose (1-3): ");
+        System.Console.Write("Choose (1, 2, or q): ");
         
-        var choice = System.Console.ReadLine();
+        var choice = System.Console.ReadLine()?.Trim().ToLower();
         
         return choice switch
         {
@@ -139,16 +139,21 @@ public class ConsoleGameRenderer
         DisplayColoredPlayerChar(player);
         System.Console.WriteLine("'s turn");
 
-        DisplayMoveHistory(gameState);
-
         while (true)
         {
-            System.Console.Write("Enter position (0-8) or 'q' to quit: ");
+            System.Console.Write("Enter position (0-8), 'h' for history, or 'q' to quit: ");
             var input = System.Console.ReadLine()?.Trim().ToLower();
             
-            if (input == "q" || input == "quit")
+            if (input == "q")
             {
                 return null;
+            }
+            
+            if (input == "h")
+            {
+                DisplayMoveHistory(gameState);
+                System.Console.WriteLine();
+                continue; // Stay in the loop to get another input
             }
             
             if (int.TryParse(input, out var position) && position >= 0 && position <= 8)
@@ -156,24 +161,30 @@ public class ConsoleGameRenderer
                 return position;
             }
 
-            ShowError("Invalid input. Please enter a number between 0 and 8.");
+            ShowError("Invalid input. Please enter a number between 0 and 8, 'h' for history, or 'q' to quit.");
         }
     }
 
     private static void DisplayMoveHistory(GameState state)
     {
-        if (state.MoveHistory.Count > 0)
+        if (state.MoveHistory.Count == 0)
         {
-            System.Console.WriteLine();
-            System.Console.WriteLine("Move History:");
-            
-            for (int i = 0; i < state.MoveHistory.Count; i++)
-            {
-                var move = state.MoveHistory[i];
-                System.Console.Write($"  {i + 1}. ");
-                DisplayColoredPlayerChar(move.Player);
-                System.Console.WriteLine($" → Position {move.Position}");
-            }
+            System.Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine("No moves have been made yet.");
+            System.Console.ResetColor();
+            return;
+        }
+
+        System.Console.ForegroundColor = ConsoleColor.Cyan;
+        System.Console.WriteLine("Move History:");
+        System.Console.ResetColor();
+        
+        for (int i = 0; i < state.MoveHistory.Count; i++)
+        {
+            var move = state.MoveHistory[i];
+            System.Console.Write($"  {i + 1}. ");
+            DisplayColoredPlayerChar(move.Player);
+            System.Console.WriteLine($" → Position {move.Position} at {move.Timestamp:HH:mm:ss}");
         }
     }
 
@@ -231,11 +242,21 @@ public class ConsoleGameRenderer
         System.Console.WriteLine("6 | 7 | 8");
         System.Console.WriteLine();
         System.Console.WriteLine("Debug Features:");
-        System.Console.WriteLine("• View complete move history");
+        System.Console.WriteLine("• Press 'h' during your turn to view move history");
         System.Console.WriteLine("• See game state and timing information");
         System.Console.WriteLine("• Position validation with clear error messages");
         
         System.Console.WriteLine();
+        System.Console.ForegroundColor = ConsoleColor.Cyan;
+        System.Console.WriteLine("Press 'q' to return to main menu or any other key to wait...");
+        System.Console.ResetColor();
+        
+        var key = System.Console.ReadKey(true);
+        if (key.KeyChar == 'q' || key.KeyChar == 'Q')
+        {
+            return;
+        }
+        
         System.Console.ForegroundColor = ConsoleColor.Cyan;
         System.Console.WriteLine("Returning to main menu...");
         System.Console.ResetColor();
@@ -244,7 +265,7 @@ public class ConsoleGameRenderer
 
     public void ShowInvalidChoice()
     {
-        ShowError("Invalid choice. Please select 1, 2, or 3.");
+        ShowError("Invalid choice. Please select 1, 2, or q.");
     }
 
     public static void WaitForKeyPress()

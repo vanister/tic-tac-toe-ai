@@ -21,7 +21,7 @@ public class ConsoleGame
         {
             var choice = ConsoleGameRenderer.ShowMainMenu();
             
-            switch (choice)
+            switch (choice.ToLower())
             {
                 case "1":
                     PlayGame();
@@ -29,7 +29,7 @@ public class ConsoleGame
                 case "2":
                     ShowGameRules();
                     break;
-                case "3":
+                case "q":
                     return;
                 default:
                     _renderer.ShowInvalidChoice();
@@ -54,20 +54,31 @@ public class ConsoleGame
             
             var currentPlayer = _engine.GetCurrentPlayer();
             var gameState = _engine.GetState();
-            var position = _renderer.GetPlayerMove(currentPlayer, gameState.Board, gameState);
             
-            if (position == null)
+            // Get player input and validate moves in a loop
+            while (true)
             {
-                // User wants to quit the game
-                break;
-            }
+                var position = _renderer.GetPlayerMove(currentPlayer, gameState.Board, gameState);
+                
+                if (position == null)
+                {
+                    // User wants to quit the game
+                    return;
+                }
 
-            if (!_engine.TryMakeMove(currentPlayer, position.Value, out var error))
-            {
-                // Show error after clearing screen and redisplaying game state
-                _renderer.DisplayGameState(_engine.GetState());
-                ConsoleGameRenderer.ShowError(error!);
-                System.Console.WriteLine(); // Add some spacing after error
+                // Validate the move with the engine
+                if (_engine.IsValidMove(currentPlayer, position.Value, out var error))
+                {
+                    // Valid move - make it and break out of input loop
+                    _engine.MakeMove(currentPlayer, position.Value);
+                    break;
+                }
+                else
+                {
+                    // Invalid move - show error and get input again
+                    ConsoleGameRenderer.ShowError(error!);
+                    Thread.Sleep(1500); // Brief pause to show error
+                }
             }
         }
 

@@ -52,6 +52,12 @@ public class GameEngine
         _store.Dispatch(new ResetGameAction());
     }
 
+    public bool IsValidMove(Player player, int position, out string? error)
+    {
+        error = ValidateMove(player, position);
+        return error == null;
+    }
+
     private string? ValidateMove(Player player, int position)
     {
         var state = _store.State.Game;
