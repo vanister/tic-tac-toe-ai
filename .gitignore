@@ -482,3 +482,13 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Training data and AI models - exclude from version control
+data/training/*.jsonl
+data/training/*.json
+data/training/*.db
+data/training/*.sqlite
+data/models/
+data/*.jsonl
+data/*.db
+data/*.sqlite

@@ -2,6 +2,7 @@ using TicTacToe.Engine;
 using TicTacToe.Training;
 using TicTacToe.Training.Players;
 using TicTacToe.Training.Metrics;
+using TicTacToe.Training.Services;
 
 namespace TicTacToe.Training.Console;
 
@@ -14,7 +15,7 @@ public class TrainingConsole
         _trainingLoop = new TrainingLoop();
     }
 
-    public void Run()
+    public async Task Run()
     {
         ShowWelcome();
 
@@ -25,7 +26,7 @@ public class TrainingConsole
             switch (choice.ToLower())
             {
                 case "1":
-                    RunRandomVsRandomTraining();
+                    await RunRandomVsRandomTraining();
                     break;
                 case "2":
                     ShowTrainingStats();
@@ -60,7 +61,7 @@ public class TrainingConsole
         return System.Console.ReadLine()?.Trim() ?? "";
     }
 
-    private void RunRandomVsRandomTraining()
+    private async Task RunRandomVsRandomTraining()
     {
         System.Console.WriteLine("\nStarting Random vs Random Training...");
         System.Console.Write("Number of games (default 1000): ");
@@ -92,6 +93,30 @@ public class TrainingConsole
 
         System.Console.WriteLine("\n\nTraining Complete!");
         ShowMetrics(metrics);
+        
+        // Ask if user wants to save training data
+        System.Console.Write("\nSave training data to file? (y/n): ");
+        var saveData = System.Console.ReadLine()?.Trim().ToLower();
+        
+        if (saveData == "y" || saveData == "yes")
+        {
+            var filePath = TrainingDataExporter.GenerateDefaultFilePath();
+            try
+            {
+                await TrainingDataExporter.SaveToJsonLinesAsync(
+                    filePath, 
+                    metrics, 
+                    _trainingLoop.GetResults(),
+                    playerX.Name,
+                    playerO.Name);
+                
+                System.Console.WriteLine($"Training data saved to: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine($"Error saving training data: {ex.Message}");
+            }
+        }
         
         System.Console.WriteLine("\nPress any key to continue...");
         System.Console.ReadKey();

@@ -1,0 +1,2 @@
+# This file ensures the training directory exists in git
+# Training result files are excluded via .gitignore

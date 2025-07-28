@@ -1,11 +1,12 @@
 using TicTacToe.Training;
 using TicTacToe.Training.Players;
+using TicTacToe.Training.Services;
 
 namespace TicTacToe.Training.Runner;
 
 public class TrainingRunner
 {
-    public static void Run(string[] args)
+    public static async Task Run(string[] args)
     {
         System.Console.WriteLine("=== Tic Tac Toe AI Training Runner ===");
         System.Console.WriteLine();
@@ -19,9 +20,12 @@ public class TrainingRunner
         // Parse arguments
         var numberOfGames = 1000;
         var showSamples = false;
+        string? outputFile = null;
         
-        foreach (var arg in args)
+        for (int i = 0; i < args.Length; i++)
         {
+            var arg = args[i];
+            
             if (int.TryParse(arg, out var games))
             {
                 numberOfGames = games;
@@ -30,6 +34,20 @@ public class TrainingRunner
                      arg.Equals("-s", StringComparison.OrdinalIgnoreCase))
             {
                 showSamples = true;
+            }
+            else if (arg.Equals("--output", StringComparison.OrdinalIgnoreCase) || 
+                     arg.Equals("-o", StringComparison.OrdinalIgnoreCase))
+            {
+                if (i + 1 < args.Length)
+                {
+                    outputFile = args[i + 1];
+                    i++; // Skip the next argument since we consumed it
+                }
+                else
+                {
+                    System.Console.WriteLine("Error: --output requires a file path");
+                    return;
+                }
             }
         }
 
@@ -62,6 +80,27 @@ public class TrainingRunner
         System.Console.WriteLine($"Average Game Length: {metrics.AverageGameLength:F1} moves");
         System.Console.WriteLine($"Total Duration: {metrics.TotalDuration:mm\\:ss\\.fff}");
         System.Console.WriteLine($"Games per second: {numberOfGames / metrics.TotalDuration.TotalSeconds:F0}");
+
+        // Save training data if output file specified
+        if (outputFile != null || numberOfGames >= 100) // Auto-save for larger runs
+        {
+            var filePath = outputFile ?? TrainingDataExporter.GenerateDefaultFilePath();
+            try
+            {
+                await TrainingDataExporter.SaveToJsonLinesAsync(
+                    filePath, 
+                    metrics, 
+                    trainingLoop.GetResults(),
+                    playerX.Name,
+                    playerO.Name);
+                
+                System.Console.WriteLine($"Training data saved to: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine($"Warning: Failed to save training data: {ex.Message}");
+            }
+        }
 
         if (showSamples)
         {
