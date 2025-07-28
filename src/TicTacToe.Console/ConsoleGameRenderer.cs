@@ -6,8 +6,7 @@ public class ConsoleGameRenderer
 {
     public static void ShowWelcome()
     {
-        System.Console.WriteLine("╔══════════════════════════════════════╗");
-        System.Console.WriteLine("║          TIC TAC TOE GAME            ║");
+        ShowHeader();
         System.Console.WriteLine("║      Manual Play & Debug Mode       ║");
         System.Console.WriteLine("╚══════════════════════════════════════╝");
         System.Console.WriteLine();
@@ -15,7 +14,9 @@ public class ConsoleGameRenderer
 
     public static string ShowMainMenu()
     {
-        System.Console.WriteLine();
+        System.Console.Clear();
+        ShowHeader();
+        
         System.Console.WriteLine("Main Menu:");
         System.Console.WriteLine("1. Play Game");
         System.Console.WriteLine("2. Show Rules");
@@ -27,6 +28,9 @@ public class ConsoleGameRenderer
 
     public static Player? GetStartingPlayer()
     {
+        System.Console.Clear();
+        ShowHeader();
+        
         System.Console.WriteLine("Who goes first?");
         System.Console.WriteLine("1. X (crosses)");
         System.Console.WriteLine("2. O (noughts)");
@@ -47,44 +51,17 @@ public class ConsoleGameRenderer
     public void DisplayGameState(GameState state)
     {
         System.Console.Clear();
-        System.Console.WriteLine("╔══════════════════════════════════════╗");
-        System.Console.WriteLine("║          TIC TAC TOE GAME            ║");
-        System.Console.WriteLine("╚══════════════════════════════════════╝");
-        System.Console.WriteLine();
+        ShowHeader();
         
-        DisplayBoard(state.Board);
-        System.Console.WriteLine();
+        DisplayGameInfo(state);
         
         if (state.Status == GameStatus.Playing)
         {
+            System.Console.WriteLine();
             System.Console.Write("Current Player: ");
             DisplayColoredPlayerChar(state.CurrentPlayer);
             System.Console.WriteLine();
         }
-
-        DisplayGameInfo(state);
-    }
-
-    private void DisplayBoard(int[] board)
-    {
-        System.Console.WriteLine("Board positions (0-8) and current state:");
-        System.Console.WriteLine();
-        
-        // Show position numbers
-        System.Console.WriteLine("Positions:     Current:");
-        System.Console.Write("0 | 1 | 2      ");
-        DisplayColoredBoardRow(board, 0, 1, 2);
-        System.Console.WriteLine();
-        
-        System.Console.WriteLine("----------     ----------");
-        System.Console.Write("3 | 4 | 5      ");
-        DisplayColoredBoardRow(board, 3, 4, 5);
-        System.Console.WriteLine();
-        
-        System.Console.WriteLine("----------     ----------");
-        System.Console.Write("6 | 7 | 8      ");
-        DisplayColoredBoardRow(board, 6, 7, 8);
-        System.Console.WriteLine();
     }
 
     private static char GetDisplayChar(int boardValue, int position)
@@ -150,27 +127,19 @@ public class ConsoleGameRenderer
         System.Console.WriteLine($"Game ID: {state.GameId[..8]}..."); // Show first 8 chars
         System.Console.WriteLine($"Moves played: {state.MoveHistory.Count}");
         System.Console.WriteLine($"Started: {state.StartTime:HH:mm:ss}");
-        
-        if (state.MoveHistory.Count > 0)
-        {
-            System.Console.WriteLine("\nMove History:");
-            
-            for (int i = 0; i < state.MoveHistory.Count; i++)
-            {
-                var move = state.MoveHistory[i];
-                System.Console.Write($"  {i + 1}. ");
-                DisplayColoredPlayerChar(move.Player);
-                System.Console.WriteLine($" → Position {move.Position}");
-            }
-        }
     }
 
-    public int? GetPlayerMove(Player player)
+    public int? GetPlayerMove(Player player, int[] board, GameState gameState)
     {
         System.Console.WriteLine();
+        DisplayPositionsAndCurrentBoard(board);
+        System.Console.WriteLine();
+        
         System.Console.Write("Player ");
         DisplayColoredPlayerChar(player);
         System.Console.WriteLine("'s turn");
+
+        DisplayMoveHistory(gameState);
 
         while (true)
         {
@@ -188,6 +157,23 @@ public class ConsoleGameRenderer
             }
 
             ShowError("Invalid input. Please enter a number between 0 and 8.");
+        }
+    }
+
+    private static void DisplayMoveHistory(GameState state)
+    {
+        if (state.MoveHistory.Count > 0)
+        {
+            System.Console.WriteLine();
+            System.Console.WriteLine("Move History:");
+            
+            for (int i = 0; i < state.MoveHistory.Count; i++)
+            {
+                var move = state.MoveHistory[i];
+                System.Console.Write($"  {i + 1}. ");
+                DisplayColoredPlayerChar(move.Player);
+                System.Console.WriteLine($" → Position {move.Position}");
+            }
         }
     }
 
@@ -226,10 +212,8 @@ public class ConsoleGameRenderer
     public static void ShowGameRules()
     {
         System.Console.Clear();
-        System.Console.WriteLine("╔══════════════════════════════════════╗");
-        System.Console.WriteLine("║            GAME RULES                ║");
-        System.Console.WriteLine("╚══════════════════════════════════════╝");
-        System.Console.WriteLine();
+        ShowHeader();
+        
         System.Console.WriteLine("Tic Tac Toe Rules:");
         System.Console.WriteLine();
         System.Console.WriteLine("• The game is played on a 3x3 grid");
@@ -250,6 +234,12 @@ public class ConsoleGameRenderer
         System.Console.WriteLine("• View complete move history");
         System.Console.WriteLine("• See game state and timing information");
         System.Console.WriteLine("• Position validation with clear error messages");
+        
+        System.Console.WriteLine();
+        System.Console.ForegroundColor = ConsoleColor.Cyan;
+        System.Console.WriteLine("Returning to main menu...");
+        System.Console.ResetColor();
+        System.Threading.Thread.Sleep(2000); // Give time to read the rules
     }
 
     public void ShowInvalidChoice()
@@ -262,5 +252,60 @@ public class ConsoleGameRenderer
         System.Console.WriteLine();
         System.Console.WriteLine("Press any key to continue...");
         System.Console.ReadKey(true);
+    }
+
+    public static void ShowReturnToMenu()
+    {
+        System.Console.WriteLine();
+        System.Console.ForegroundColor = ConsoleColor.Cyan;
+        System.Console.WriteLine("Returning to main menu...");
+        System.Console.ResetColor();
+        System.Threading.Thread.Sleep(1500); // Brief pause to let players see the result
+    }
+
+    public static void ShowHeader()
+    {
+        System.Console.WriteLine("╔══════════════════════════════════════╗");
+        System.Console.WriteLine("║          TIC TAC TOE GAME            ║");
+        System.Console.WriteLine("╚══════════════════════════════════════╝");
+        System.Console.WriteLine();
+    }
+
+    private static void DisplayPositionsAndCurrentBoard(int[] board)
+    {
+        System.Console.WriteLine("Positions:     Current:");
+        
+        // Row 1
+        System.Console.Write("0 | 1 | 2      ");
+        DisplayColoredChar(board[0], 0);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[1], 1);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[2], 2);
+        System.Console.WriteLine();
+        
+        // Separator line
+        System.Console.WriteLine("----------     ----------");
+        
+        // Row 2
+        System.Console.Write("3 | 4 | 5      ");
+        DisplayColoredChar(board[3], 3);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[4], 4);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[5], 5);
+        System.Console.WriteLine();
+        
+        // Separator line
+        System.Console.WriteLine("----------     ----------");
+        
+        // Row 3
+        System.Console.Write("6 | 7 | 8      ");
+        DisplayColoredChar(board[6], 6);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[7], 7);
+        System.Console.Write(" | ");
+        DisplayColoredChar(board[8], 8);
+        System.Console.WriteLine();
     }
 }

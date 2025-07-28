@@ -15,7 +15,6 @@ public class ConsoleGame
 
     public void Run()
     {
-        System.Console.Clear();
         ConsoleGameRenderer.ShowWelcome();
 
         while (true)
@@ -41,8 +40,6 @@ public class ConsoleGame
 
     private void PlayGame()
     {
-        System.Console.Clear();
-        
         var startingPlayer = ConsoleGameRenderer.GetStartingPlayer();
         if (startingPlayer == null)
         {
@@ -56,7 +53,8 @@ public class ConsoleGame
             _renderer.DisplayGameState(_engine.GetState());
             
             var currentPlayer = _engine.GetCurrentPlayer();
-            var position = _renderer.GetPlayerMove(currentPlayer);
+            var gameState = _engine.GetState();
+            var position = _renderer.GetPlayerMove(currentPlayer, gameState.Board, gameState);
             
             if (position == null)
             {
@@ -77,14 +75,12 @@ public class ConsoleGame
         {
             _renderer.DisplayGameState(_engine.GetState());
             ConsoleGameRenderer.ShowGameResult(_engine.GetWinner());
+            ConsoleGameRenderer.ShowReturnToMenu();
         }
-
-        ConsoleGameRenderer.WaitForKeyPress();
     }
 
     private void ShowGameRules()
     {
         ConsoleGameRenderer.ShowGameRules();
-        ConsoleGameRenderer.WaitForKeyPress();
     }
 }
