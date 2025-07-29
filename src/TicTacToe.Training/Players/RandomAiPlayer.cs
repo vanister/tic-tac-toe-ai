@@ -3,7 +3,7 @@ using TicTacToe.Engine.Selectors;
 
 namespace TicTacToe.Training.Players;
 
-public class RandomAiPlayer : IAiPlayer
+public class RandomAiPlayer : IPlayer
 {
     private readonly Random _random;
 
@@ -19,7 +19,7 @@ public class RandomAiPlayer : IAiPlayer
         _random = new Random(seed);
     }
 
-    public int SelectMove(GameState gameState, Player player)
+    public int? SelectMove(GameState gameState, Player player)
     {
         var availablePositions = GameSelectors.GetAvailablePositions(gameState);
         

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../TicTacToe.Engine/TicTacToe.Engine.csproj" />
+    <ProjectReference Include="../TicTacToe.Console/TicTacToe.Console.csproj" />
   </ItemGroup>
 
 </Project>
