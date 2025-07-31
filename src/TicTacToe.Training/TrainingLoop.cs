@@ -48,13 +48,15 @@ public class TrainingLoop
         var draws = _gameResults.Count(r => r.Winner == null);
         var averageGameLength = _gameResults.Average(r => r.MoveCount);
 
-        return new TrainingMetrics(
+        var metrics = new TrainingMetrics(
             TotalGames: _gameResults.Count,
             XWins: xWins,
             OWins: oWins,
             Draws: draws,
             AverageGameLength: averageGameLength,
             TotalDuration: totalDuration);
+
+        return metrics;
     }
 
     public IReadOnlyList<GameResult> GetResults() => _gameResults.AsReadOnly();

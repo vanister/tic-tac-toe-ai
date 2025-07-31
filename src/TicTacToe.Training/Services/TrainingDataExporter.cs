@@ -65,17 +65,21 @@ public class TrainingDataExporter
 
     private static GameResultData ConvertGameResult(GameResult game)
     {
-        return new GameResultData(
+        var moves = game.MoveHistory.Select(m => new MoveData(
+            Player: m.Player.ToString(),
+            Position: m.Position,
+            Timestamp: m.Timestamp)).ToList();
+
+        var gameResultData = new GameResultData(
             GameId: game.GameId,
             Timestamp: game.MoveHistory.FirstOrDefault()?.Timestamp ?? DateTime.UtcNow,
             Winner: game.Winner?.ToString(),
             MoveCount: game.MoveCount,
             Duration: game.Duration,
             StartingPlayer: game.StartingPlayer.ToString(),
-            Moves: game.MoveHistory.Select(m => new MoveData(
-                Player: m.Player.ToString(),
-                Position: m.Position,
-                Timestamp: m.Timestamp)).ToList());
+            Moves: moves);
+
+        return gameResultData;
     }
 
     public static string GenerateDefaultFilePath()
