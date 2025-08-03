@@ -1,6 +1,6 @@
 # Claude AI Instructions
 
-[Project overview](./readme.md)
+[Project overview](README.md)
 
 ## TypeScript Coding Standards
 - Indent using 2 spaces instead of tabs
