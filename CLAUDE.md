@@ -1,15 +1,15 @@
-# TypeScript Coding Standards
+## TypeScript Coding Standards
 - Indent using 2 spaces instead of tabs
 - Use functions over arrow functions unless it's simple and improves readability
 - Always use parens for arrow functions
 - Destructure objects when extracting variables
 
-# React Components
+## React Components
 - Function components should be defined as functions that are default exported
 - Create components with a single purpose
 - Keep component code focused on rendering and move business logic to helpers
 
-# General Code Style
+## General Code Style
 - Guard clauses first
 - Return early
 - Avoid deeply nested if statements
