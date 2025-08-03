@@ -1,3 +1,18 @@
-# Claude AI Assistant
+# TypeScript Coding Standards
+- Indent using 2 spaces instead of tabs
+- Use functions over arrow functions unless it's simple and improves readability
+- Always use parens for arrow functions
+- Destructure objects when extracting variables
 
-Claude is an AI assistant designed to help users interact with various data and services efficiently. It can understand natural language commands and perform tasks such as creating files, managing repositories, and more. With its intelligent design, Claude aims to facilitate a seamless user experience in managing tasks on platforms like GitHub.
+# React Components
+- Function components should be defined as functions that are default exported
+- Create components with a single purpose
+- Keep component code focused on rendering and move business logic to helpers
+
+# General Code Style
+- Guard clauses first
+- Return early
+- Avoid deeply nested if statements
+- Do not put return statements on the same line as if statements
+- Format code to 100 chars per line
+- Follow SOLID principles
