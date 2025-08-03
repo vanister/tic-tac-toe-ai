@@ -1,3 +1,7 @@
+# Claude AI Instructions
+
+[Project overview](./readme.md)
+
 ## TypeScript Coding Standards
 - Indent using 2 spaces instead of tabs
 - Use functions over arrow functions unless it's simple and improves readability
